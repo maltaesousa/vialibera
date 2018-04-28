@@ -6,6 +6,9 @@ name = "pypi"
 [packages]
 gunicorn = "*"
 django-heroku = "*"
+"psycopg2" = "*"
+django = "*"
+dj-database-url = "*"
 
 [dev-packages]
 
