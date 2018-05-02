@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'vialibera.wsgi.application'
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.config(conn_max_age=600, default=os.environ.get('DATABASE_DEV'))
+    'default': dj_database_url.config(conn_max_age=600, default=os.environ.get('DB_VIALIBERA_DEV'))
 }
 
 
@@ -111,12 +111,14 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# DEV Heroku specific conf
 
 django_heroku.settings(locals())
