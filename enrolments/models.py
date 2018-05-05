@@ -14,7 +14,7 @@ class Student(models.Model):
   address = models.TextField()
   zipcode = models.IntegerField()
   city = models.TextField()
-  mail = models.EmailField
+  mail = models.EmailField()
   phone_number = models.IntegerField()
   birthdate = models.DateField()
 
