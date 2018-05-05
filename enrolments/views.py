@@ -19,9 +19,12 @@ class DetailView(generic.DetailView):
     model = Course
     template_name = 'enrolments/detail.html'
 
-class ResultsView(generic.DetailView):
-    model = Enrolment
+class EnrolmentsView(generic.ListView):
     template_name = 'enrolments/enrolments.html'
+    context_object_name = 'enrolments_list'
+
+    def get_queryset(self):
+        return Enrolment.objects.filter(course=self.kwargs['pk'])
 
 def enrol(request, course_id):
     course = get_object_or_404(Course, pk=course_id)
