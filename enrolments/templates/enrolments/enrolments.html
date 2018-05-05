@@ -1,0 +1,9 @@
+{% if enrolments_list %}
+  <ul>
+    {% for enrolment in enrolments_list %}
+      <li>{{ enrolment }}</li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>No enrolments available.</p>
+{% endif %}
