@@ -1,1 +1,12 @@
-{{ course }}
+<h1>{{ course.name }}</h1>
+
+<p>{{ course.description }}</p>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="{% url 'enrolments:enrol' course.id %}" method="POST">
+  {% csrf_token %}
+  <label for="student">Student</label><br />
+  <input type="number" name="student" id="student" value="" />
+  <input type="submit" value="Enrol" />
+</form>
