@@ -1,24 +1,38 @@
 from django.shortcuts import get_list_or_404, get_object_or_404, render
-from django.http import HttpResponse
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+from django.views import generic
 
 from .models import Course, Enrolment, Student
 
 import os
 
-def index(request):
-    latest_course_list = Course.objects.order_by('-id')[:5]
-    context = {
-        'latest_course_list': latest_course_list
-    }
-    return render(request, 'enrolments/index.html', context)
+class IndexView(generic.ListView):
+    template_name = 'enrolments/index.html'
+    context_object_name = 'latest_course_list'
 
-def detail(request, course_id):
-    course = get_object_or_404(Course, pk=course_id)
-    return render(request, 'enrolments/detail.html', {'course': course})
+    def get_queryset(self):
+        """Return the last five published courses."""
+        return Course.objects.order_by('-id')[:5]
 
-def enrolments(request, course_id):
-    enrolments_list = get_list_or_404(Enrolment, course_id=course_id)
-    return render(request, 'enrolments/enrolments.html', {'enrolments_list': enrolments_list})
+class DetailView(generic.DetailView):
+    model = Course
+    template_name = 'enrolments/detail.html'
+
+class ResultsView(generic.DetailView):
+    model = Enrolment
+    template_name = 'enrolments/enrolments.html'
 
 def enrol(request, course_id):
-    return render(request, 'enrolments/enrol.html', {})
+    course = get_object_or_404(Course, pk=course_id)
+    try:
+        student = Student.objects.get(pk=request.POST['student'])
+    except (KeyError, Student.DoesNotExist):
+        return render(request, 'enrolments/detail.html', {
+            'course': course,
+            'error_message': "Student does not exist."
+        })
+    else:
+        enrolment = Enrolment(course = course, student = student)
+        enrolment.save()
+        return HttpResponseRedirect(reverse('enrolments:enrolments', args=(course.id,)))
