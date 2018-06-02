@@ -1,11 +1,7 @@
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>ViaLibera</title>
-</head>
-<body>
-  <a href="/enrolments/">See the available courses</a>
-</body>
-</html>
+{% extends "base_generic.html" %} 
+{% block navitems %}
+<a class="p-2 text-dark" href="/enrolments/">Cours</a>
+{% endblock %}
+{% block content %}
+Bienvenue
+{% endblock %}

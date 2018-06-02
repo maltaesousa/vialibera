@@ -7,6 +7,7 @@ from .models import Course, Enrolment, Student
 
 import os
 
+
 class IndexView(generic.ListView):
     template_name = 'enrolments/index.html'
     context_object_name = 'latest_course_list'
@@ -15,9 +16,11 @@ class IndexView(generic.ListView):
         """Return the last five published courses."""
         return Course.objects.order_by('-id')[:5]
 
+
 class DetailView(generic.DetailView):
     model = Course
     template_name = 'enrolments/detail.html'
+
 
 class EnrolmentsView(generic.ListView):
     template_name = 'enrolments/enrolments.html'
@@ -25,6 +28,7 @@ class EnrolmentsView(generic.ListView):
 
     def get_queryset(self):
         return Enrolment.objects.filter(course=self.kwargs['pk'])
+
 
 def enrol(request, course_id):
     course = get_object_or_404(Course, pk=course_id)

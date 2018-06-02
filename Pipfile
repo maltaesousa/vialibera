@@ -9,10 +9,16 @@ django-heroku = "*"
 "psycopg2" = "*"
 django = "*"
 dj-database-url = "*"
+"django-bootstrap4" = "*"
 
 [dev-packages]
 faker = "*"
 pylint = "*"
+ptvsd = "*"
+"pep8" = "*"
 
 [requires]
 python_version = "3.6"
+
+[pipenv]
+allow_prereleases = true

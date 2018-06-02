@@ -1,13 +1,25 @@
-{% load static %}
+{% extends "base_generic.html" %} 
+{% block navitems %}
+<a class="p-2 text-dark active" href="/enrolments/">Cours</a>
+{% endblock %}
 
-<link rel="stylesheet" type="text/css" href="{% static 'enrolments/style.css' %}" />
-
+{% block content %}
 {% if latest_course_list %}
-  <ul>
-    {% for course in latest_course_list %}
-      <li><a href="{% url 'enrolments:detail' course.id %}">{{ course.name }}</a></li>
-    {% endfor %}
-  </ul>
+<div class="card-deck mb-3 text-center">
+  {% for course in latest_course_list %}
+  <div class="card mb-4 box-shadow">
+    <div class="card-header">
+      <h4 class="my-0 font-weight-normal">{{ course.name }}</h4>
+    </div>
+    <div class="card-body">
+      <p>{{ course.description}}</p>
+      <small>{{ couse.price }}</small>
+      <a class="btn btn-lg btn-block btn-outline-primary" href="{% url 'enrolments:detail' course.id %}" type="button">S'inscrire</a>
+    </div>
+  </div>
+  {% endfor %}
+</div>
 {% else %}
   <p>No courses available.</p>
 {% endif %}
+{% endblock %}
