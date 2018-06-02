@@ -3,7 +3,7 @@ from django.utils import timezone
 
 
 class Course(models.Model):
-    name = models.TextField()
+    name = models.CharField(max_length=100)
     description = models.TextField()
     price = models.FloatField()
     datetime_start = models.DateTimeField()
@@ -11,11 +11,11 @@ class Course(models.Model):
 
 
 class Student(models.Model):
-    first_name = models.TextField()
-    last_name = models.TextField()
-    address = models.TextField()
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    address = models.CharField(max_length=100)
     zipcode = models.IntegerField()
-    city = models.TextField()
+    city = models.CharField(max_length=100)
     mail = models.EmailField()
     phone_number = models.IntegerField()
     birthdate = models.DateField()

@@ -1,12 +1,17 @@
+{% extends "base_generic.html" %}
+{% load bootstrap4 %}
+{% load static %}
+{% block content %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
 <h1>{{ course.name }}</h1>
 
 <p>{{ course.description }}</p>
 
-{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-
-<form action="{% url 'enrolments:enrol' course.id %}" method="POST">
-  {% csrf_token %}
-  <label for="student">Student</label><br />
-  <input type="number" name="student" id="student" value="" />
-  <input type="submit" value="Enrol" />
+<form  action="{% url 'enrolments:enrol' course.id %}" method="post">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    {% buttons submit='Enregistrer' reset="Annuler" %}{% endbuttons %}
 </form>
+
+{% endblock %}

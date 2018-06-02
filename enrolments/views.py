@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views import generic
 
+from .forms import CreateStudentForm
 from .models import Course, Enrolment, Student
 
 import os
@@ -17,9 +18,11 @@ class IndexView(generic.ListView):
         return Course.objects.order_by('-id')[:5]
 
 
-class DetailView(generic.DetailView):
+class EnrolNewStudentView(generic.DetailView):
     model = Course
+    form = CreateStudentForm()
     template_name = 'enrolments/detail.html'
+    extra_context = { 'form': form }
 
 
 class EnrolmentsView(generic.ListView):
@@ -32,7 +35,9 @@ class EnrolmentsView(generic.ListView):
 
 def enrol(request, course_id):
     course = get_object_or_404(Course, pk=course_id)
+    form = CreateStudentForm(request.POST)
     try:
+        #TODO save student en link to course
         student = Student.objects.get(pk=request.POST['student'])
     except (KeyError, Student.DoesNotExist):
         return render(request, 'enrolments/detail.html', {
