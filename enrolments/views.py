@@ -50,9 +50,9 @@ def printEnrolment(request, course_id, student_id):
     course = get_object_or_404(Course, pk=course_id)
     student = get_object_or_404(Student, pk=student_id)
     p.drawString(100, 750, "Confirmation d'inscription")
-    p.drawString(100, 700, "Étudiant" + student.first_name + ' ' + student.last_name)
-    p.drawString(100, 650, "Cours" + course.name)
-    p.drawString(100, 600, "Veuillez vous aquiter de la somme avant le début du cours")
+    p.drawString(100, 700, "Étudiant: " + student.first_name + ' ' + student.last_name)
+    p.drawString(100, 650, "Cours: " + course.name)
+    p.drawString(100, 600, "Veuillez vous aquiter de la somme au début du cours.")
 
     p.showPage()
     p.save()
