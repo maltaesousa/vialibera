@@ -1,13 +1,12 @@
 from django.shortcuts import get_list_or_404, get_object_or_404, render
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.views import generic
 
 from .forms import CreateStudentForm
 from .models import Course, Enrolment, Student
 
-import os
-
+from reportlab.pdfgen import canvas
 
 class IndexView(generic.ListView):
     template_name = 'enrolments/index.html'
@@ -36,15 +35,26 @@ class EnrolmentsView(generic.ListView):
 def enrol(request, course_id):
     course = get_object_or_404(Course, pk=course_id)
     form = CreateStudentForm(request.POST)
-    try:
-        #TODO save student en link to course
-        student = Student.objects.get(pk=request.POST['student'])
-    except (KeyError, Student.DoesNotExist):
-        return render(request, 'enrolments/detail.html', {
-            'course': course,
-            'error_message': "Student does not exist."
-        })
-    else:
-        enrolment = Enrolment(course = course, student = student)
-        enrolment.save()
-        return HttpResponseRedirect(reverse('enrolments:enrolments', args=(course.id,)))
+    new_student = form.save()
+    new_enrolment = Enrolment(course=course, student= new_student)
+    new_enrolment.save()
+    student_id = new_student.id
+    return HttpResponseRedirect(reverse('enrolments:print-enrolment', args=(course.id, student_id)))
+
+
+def printEnrolment(request, course_id, student_id):
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="Confirmation.pdf"'
+
+    p = canvas.Canvas(response)
+    course = get_object_or_404(Course, pk=course_id)
+    student = get_object_or_404(Student, pk=student_id)
+    p.drawString(100, 750, "Confirmation d'inscription")
+    p.drawString(100, 700, "Étudiant" + student.first_name + ' ' + student.last_name)
+    p.drawString(100, 650, "Cours" + course.name)
+    p.drawString(100, 600, "Veuillez vous aquiter de la somme avant le début du cours")
+
+    p.showPage()
+    p.save()
+    #TODO redirect!
+    return response
