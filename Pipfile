@@ -10,6 +10,7 @@ django-heroku = "*"
 django = "*"
 dj-database-url = "*"
 "django-bootstrap4" = "*"
+reportlab = "*"
 
 [dev-packages]
 faker = "*"
